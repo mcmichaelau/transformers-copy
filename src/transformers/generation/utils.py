@@ -2001,6 +2001,7 @@ class GenerationMixin:
                     - [`~generation.GenerateEncoderDecoderOutput`],
                     - [`~generation.GenerateBeamEncoderDecoderOutput`]
         """
+        print("------------- Generate -------------")
 
         # 1. Handle `generation_config` and kwargs that might update it, and validate the `.generate()` call
         self._validate_model_class()
