@@ -2135,6 +2135,8 @@ class GenerationMixin:
         # 8. determine generation mode
         generation_mode = generation_config.get_generation_mode(assistant_model)
 
+        print(f"generation_mode in generate: {generation_mode}")
+
         if streamer is not None and (generation_config.num_beams > 1):
             raise ValueError(
                 "`streamer` cannot be used with beam search (yet!). Make sure that `num_beams` is set to 1."
@@ -2406,6 +2408,8 @@ class GenerationMixin:
                 synced_gpus=synced_gpus,
                 **model_kwargs,
             )
+
+        print(f'result in generate: {result}')
 
         # Convert to legacy cache format if requested
         if (
