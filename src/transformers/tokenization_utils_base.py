@@ -1716,6 +1716,7 @@ class PreTrainedTokenizerBase(SpecialTokensMixin, PushToHubMixin):
                     rendered_chat = rendered_chat[: rendered_chat.rindex(final_message) + len(final_message)]
 
             print(f"rendered_chat {i} in apply_chat_template: {rendered_chat}")
+            print("-----")
             rendered.append(rendered_chat)
 
         if not is_batched:
