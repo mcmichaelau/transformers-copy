@@ -259,7 +259,7 @@ class TextGenerationPipeline(Pipeline):
             - **generated_token_ids** (`torch.Tensor` or `tf.Tensor`, present when `return_tensors=True`) -- The token
               ids of the generated text.
         """
-        print("here from local")
+        print("here from local 2")
         if isinstance(
             text_inputs, (list, tuple, KeyDataset) if is_torch_available() else (list, tuple)
         ) and isinstance(text_inputs[0], (list, tuple, dict)):
