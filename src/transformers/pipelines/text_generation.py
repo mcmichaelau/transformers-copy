@@ -316,6 +316,9 @@ class TextGenerationPipeline(Pipeline):
                 return_tensors=self.framework,
                 **tokenizer_kwargs,
             )
+            
+            print(f"prompt_text in preprocess chat: {prompt_text}")
+            print(f"type of prompt_text in preprocess chat: {type(prompt_text)}")
             print("inputs in preprocess chat", inputs)
         else:
             inputs = self.tokenizer(prefix + prompt_text, return_tensors=self.framework, **tokenizer_kwargs)
