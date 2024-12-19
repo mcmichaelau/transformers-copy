@@ -290,6 +290,7 @@ class TextGenerationPipeline(Pipeline):
         continue_final_message=None,
         **generate_kwargs,
     ):
+        print("------------- Preprocess -------------")
         # Only set non-None tokenizer kwargs, so as to rely on the tokenizer's defaults
         tokenizer_kwargs = {
             "add_special_tokens": add_special_tokens,
@@ -298,6 +299,8 @@ class TextGenerationPipeline(Pipeline):
             "max_length": max_length,
         }
         tokenizer_kwargs = {key: value for key, value in tokenizer_kwargs.items() if value is not None}
+
+        print("tokenizer_kwargs", tokenizer_kwargs)
 
         if isinstance(prompt_text, Chat):
             tokenizer_kwargs.pop("add_special_tokens", None)  # ignore add_special_tokens on chats
@@ -313,8 +316,10 @@ class TextGenerationPipeline(Pipeline):
                 return_tensors=self.framework,
                 **tokenizer_kwargs,
             )
+            print("inputs in preprocess chat", inputs)
         else:
             inputs = self.tokenizer(prefix + prompt_text, return_tensors=self.framework, **tokenizer_kwargs)
+            print("inputs in preprocess plain", inputs)
 
         inputs["prompt_text"] = prompt_text
 
@@ -338,9 +343,13 @@ class TextGenerationPipeline(Pipeline):
                 if "attention_mask" in inputs:
                     inputs["attention_mask"] = inputs["attention_mask"][:, -keep_length:]
 
+        print("Final inputs in preprocess", inputs)
+
         return inputs
 
     def _forward(self, model_inputs, **generate_kwargs):
+        print("------------- Forward -------------")
+        print("model_inputs in forward", model_inputs)
         input_ids = model_inputs["input_ids"]
         attention_mask = model_inputs.get("attention_mask", None)
         # Allow empty prompts
@@ -351,6 +360,8 @@ class TextGenerationPipeline(Pipeline):
         else:
             in_b = input_ids.shape[0]
         prompt_text = model_inputs.pop("prompt_text")
+
+        print("prompt_text in forward", prompt_text)
 
         # If there is a prefix, we may need to adjust the generation length. Do so without permanently modifying
         # generate_kwargs, as some of the parameterization may come from the initialization of the pipeline.
@@ -374,6 +385,8 @@ class TextGenerationPipeline(Pipeline):
         if "generation_config" not in generate_kwargs:
             generate_kwargs["generation_config"] = self.generation_config
 
+        print("generate_kwargs in forward", generate_kwargs)
+
         generated_sequence = self.model.generate(input_ids=input_ids, attention_mask=attention_mask, **generate_kwargs)
         out_b = generated_sequence.shape[0]
         if self.framework == "pt":
@@ -389,9 +402,13 @@ class TextGenerationPipeline(Pipeline):
         clean_up_tokenization_spaces=True,
         continue_final_message=None,
     ):
+        print("------------- Postprocess -------------")
         generated_sequence = model_outputs["generated_sequence"][0]
         input_ids = model_outputs["input_ids"]
         prompt_text = model_outputs["prompt_text"]
+        print("prompt_text in postprocess", prompt_text)
+        print("generated_sequence in postprocess", generated_sequence)
+        print("input_ids in postprocess", input_ids)
         generated_sequence = generated_sequence.numpy().tolist()
         records = []
         for sequence in generated_sequence:

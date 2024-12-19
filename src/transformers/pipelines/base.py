@@ -1199,9 +1199,11 @@ class Pipeline(_ScikitCompat, PushToHubMixin):
     def forward(self, model_inputs, **forward_params):
         with self.device_placement():
             if self.framework == "tf":
+                print("Forward tf")
                 model_inputs["training"] = False
                 model_outputs = self._forward(model_inputs, **forward_params)
             elif self.framework == "pt":
+                print("Forward pt")
                 inference_context = self.get_inference_context()
                 with inference_context():
                     model_inputs = self._ensure_tensor_on_device(model_inputs, device=self.device)
