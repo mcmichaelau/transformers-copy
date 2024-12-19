@@ -2012,6 +2012,9 @@ class GenerationMixin:
         self._validate_model_kwargs(model_kwargs.copy())
         self._validate_assistant(assistant_model, tokenizer, assistant_tokenizer)
 
+        print("generation_config in generate", generation_config)
+        print("kwargs in generate", kwargs)
+
         # 2. Set generation parameters if not already defined
         if synced_gpus is None:
             synced_gpus = (is_deepspeed_zero3_enabled() or is_fsdp_managed_module(self)) and dist.get_world_size() > 1
@@ -2028,6 +2031,8 @@ class GenerationMixin:
             inputs, generation_config.bos_token_id, model_kwargs
         )
         batch_size = inputs_tensor.shape[0]
+
+        print(f"batch_size in generate: {batch_size}")
 
         device = inputs_tensor.device
         self._prepare_special_tokens(generation_config, kwargs_has_attention_mask, device=device)
@@ -2070,6 +2075,7 @@ class GenerationMixin:
 
         # 5. Prepare `input_ids` which will be used for auto-regressive generation
         if self.config.is_encoder_decoder:
+            print("is_encoder_decoder in generate")
             input_ids, model_kwargs = self._prepare_decoder_input_ids_for_generation(
                 batch_size=batch_size,
                 model_input_name=model_input_name,
@@ -2078,6 +2084,7 @@ class GenerationMixin:
                 device=inputs_tensor.device,
             )
         else:
+            print("not is_encoder_decoder in generate")
             input_ids = inputs_tensor if model_input_name == "input_ids" else model_kwargs.pop("input_ids")
 
         if generation_config.token_healing:
@@ -2165,6 +2172,7 @@ class GenerationMixin:
 
         # 10. go into different generation modes
         if generation_mode == GenerationMode.ASSISTED_GENERATION:
+            print("generation_mode == GenerationMode.ASSISTED_GENERATION in generate")
             if generation_config.num_return_sequences > 1:
                 raise ValueError(
                     "num_return_sequences has to be 1 when doing assisted generate, "
@@ -2207,6 +2215,7 @@ class GenerationMixin:
                 **model_kwargs,
             )
         elif generation_mode == GenerationMode.DOLA_GENERATION:
+            print("generation_mode == GenerationMode.DOLA_GENERATION in generate")
             if self._is_stateful:
                 # DoLa decoding was not designed for stateful models, and would require some changes
                 raise ValueError(
@@ -2224,6 +2233,7 @@ class GenerationMixin:
             )
 
         elif generation_mode == GenerationMode.CONTRASTIVE_SEARCH:
+            print("generation_mode == GenerationMode.CONTRASTIVE_SEARCH in generate")
             if not model_kwargs["use_cache"]:
                 raise ValueError("Contrastive search requires `use_cache=True`")
             if self._is_stateful:
@@ -2243,6 +2253,7 @@ class GenerationMixin:
             )
 
         elif generation_mode in (GenerationMode.SAMPLE, GenerationMode.GREEDY_SEARCH):
+            print("generation_mode in (GenerationMode.SAMPLE, GenerationMode.GREEDY_SEARCH) in generate")
             # 11. expand input_ids with `num_return_sequences` additional sequences per batch
             input_ids, model_kwargs = self._expand_inputs_for_generation(
                 input_ids=input_ids,
@@ -2263,6 +2274,7 @@ class GenerationMixin:
             )
 
         elif generation_mode in (GenerationMode.BEAM_SAMPLE, GenerationMode.BEAM_SEARCH):
+            print("generation_mode in (GenerationMode.BEAM_SAMPLE, GenerationMode.BEAM_SEARCH) in generate")
             # 11. prepare beam search scorer
             beam_scorer = BeamSearchScorer(
                 batch_size=batch_size,
@@ -2294,6 +2306,7 @@ class GenerationMixin:
             )
 
         elif generation_mode == GenerationMode.GROUP_BEAM_SEARCH:
+            print("generation_mode == GenerationMode.GROUP_BEAM_SEARCH in generate")
             # 11. prepare beam search scorer
             beam_scorer = BeamSearchScorer(
                 batch_size=batch_size,
@@ -2324,6 +2337,7 @@ class GenerationMixin:
             )
 
         elif generation_mode == GenerationMode.CONSTRAINED_BEAM_SEARCH:
+            print("generation_mode == GenerationMode.CONSTRAINED_BEAM_SEARCH in generate")
             final_constraints = []
             if generation_config.constraints is not None:
                 final_constraints = generation_config.constraints
