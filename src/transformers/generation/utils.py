@@ -2256,6 +2256,7 @@ class GenerationMixin:
 
         elif generation_mode in (GenerationMode.SAMPLE, GenerationMode.GREEDY_SEARCH):
             print("generation_mode in (GenerationMode.SAMPLE, GenerationMode.GREEDY_SEARCH) in generate")
+            print(f"generation_config in generate right before expand_inputs_for_generation: {generation_config}")
             # 11. expand input_ids with `num_return_sequences` additional sequences per batch
             input_ids, model_kwargs = self._expand_inputs_for_generation(
                 input_ids=input_ids,
@@ -2263,6 +2264,8 @@ class GenerationMixin:
                 is_encoder_decoder=self.config.is_encoder_decoder,
                 **model_kwargs,
             )
+            print(f"input_ids in generate right after expand_inputs_for_generation: {input_ids}")
+            print(f"model_kwargs in generate right after expand_inputs_for_generation: {model_kwargs}")
 
             # 12. run sample (it degenerates to greedy search when `generation_config.do_sample=False`)
             result = self._sample(
