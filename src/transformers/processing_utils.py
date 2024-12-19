@@ -1103,6 +1103,7 @@ class ProcessorMixin(PushToHubMixin):
         tokenize: bool = False,
         **kwargs,
     ) -> str:
+        print("------------- Apply Chat Template processing utils -------------")
         """
         Similar to the `apply_chat_template` method on tokenizers, this method applies a Jinja template to input
         conversations to turn them into a single tokenizable string.

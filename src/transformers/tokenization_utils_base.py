@@ -1606,6 +1606,9 @@ class PreTrainedTokenizerBase(SpecialTokensMixin, PushToHubMixin):
             set, will return a dict of tokenizer outputs instead.
         """
 
+        print("------------- Apply Chat Template -------------")
+        print(f"conversation in apply_chat_template: {conversation}")
+
         if return_dict and not tokenize:
             raise ValueError(
                 "`return_dict=True` is incompatible with `tokenize=False`, because there is no dict "
