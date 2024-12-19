@@ -236,31 +236,40 @@ def infer_framework_load_model(
     Returns:
         `Tuple`: A tuple framework, model.
     """
+    print("------------- Infer Framework Load Model -------------")
     if not is_tf_available() and not is_torch_available():
+        print("No frameworks available")
         raise RuntimeError(
             "At least one of TensorFlow 2.0 or PyTorch should be installed. "
             "To install TensorFlow 2.0, read the instructions at https://www.tensorflow.org/install/ "
             "To install PyTorch, read the instructions at https://pytorch.org/."
         )
     if isinstance(model, str):
+        print("Model is a string")
         model_kwargs["_from_pipeline"] = task
         class_tuple = ()
         look_pt = is_torch_available() and framework in {"pt", None}
         look_tf = is_tf_available() and framework in {"tf", None}
         if model_classes:
+
             if look_pt:
+                print("Looking for pt model classes")
                 class_tuple = class_tuple + model_classes.get("pt", (AutoModel,))
             if look_tf:
+                print("Looking for tf model classes")
                 class_tuple = class_tuple + model_classes.get("tf", (TFAutoModel,))
         if config.architectures:
+            print("Looking for architectures")
             classes = []
             for architecture in config.architectures:
                 transformers_module = importlib.import_module("transformers")
                 if look_pt:
+                    print("Looking for pt architecture")
                     _class = getattr(transformers_module, architecture, None)
                     if _class is not None:
                         classes.append(_class)
                 if look_tf:
+                    print("Looking for tf architecture")
                     _class = getattr(transformers_module, f"TF{architecture}", None)
                     if _class is not None:
                         classes.append(_class)
@@ -286,6 +295,7 @@ def infer_framework_load_model(
                 )
 
             try:
+                print("Trying to load model:", model)
                 model = model_class.from_pretrained(model, **kwargs)
                 if hasattr(model, "eval"):
                     model = model.eval()
@@ -305,6 +315,9 @@ def infer_framework_load_model(
 
     if framework is None:
         framework = infer_framework(model.__class__)
+
+    print("Framework:", framework)
+    print("Model:", model)
     return framework, model
 
 

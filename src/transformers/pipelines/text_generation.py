@@ -361,7 +361,7 @@ class TextGenerationPipeline(Pipeline):
             in_b = input_ids.shape[0]
         prompt_text = model_inputs.pop("prompt_text")
 
-        print("prompt_text in forward", prompt_text)
+        print("prompt_text in forward", prompt_text.messages)
 
         # If there is a prefix, we may need to adjust the generation length. Do so without permanently modifying
         # generate_kwargs, as some of the parameterization may come from the initialization of the pipeline.
@@ -406,7 +406,7 @@ class TextGenerationPipeline(Pipeline):
         generated_sequence = model_outputs["generated_sequence"][0]
         input_ids = model_outputs["input_ids"]
         prompt_text = model_outputs["prompt_text"]
-        print("prompt_text in postprocess", prompt_text)
+        print("prompt_text in postprocess", prompt_text.messages)
         print("generated_sequence in postprocess", generated_sequence)
         print("input_ids in postprocess", input_ids)
         generated_sequence = generated_sequence.numpy().tolist()
