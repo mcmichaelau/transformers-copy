@@ -259,18 +259,24 @@ class TextGenerationPipeline(Pipeline):
             - **generated_token_ids** (`torch.Tensor` or `tf.Tensor`, present when `return_tensors=True`) -- The token
               ids of the generated text.
         """
-        print("here from local 2")
-        if isinstance(
-            text_inputs, (list, tuple, KeyDataset) if is_torch_available() else (list, tuple)
-        ) and isinstance(text_inputs[0], (list, tuple, dict)):
-            # We have one or more prompts in list-of-dicts format, so this is chat mode
+        if isinstance(text_inputs, (list, tuple, KeyDataset) if is_torch_available() else (list, tuple)) and isinstance(text_inputs[0], (list, tuple, dict)):
+            print("Detected input as a list or tuple with sub-elements being list/tuple/dict. This is chat mode.")
+            print(f"text_inputs: {text_inputs}")
+
             if isinstance(text_inputs[0], dict):
+                print("Detected single chat in the form of a list of dictionaries.")
+                print(f"Single chat input: {text_inputs}")
                 return super().__call__(Chat(text_inputs), **kwargs)
             else:
-                chats = [Chat(chat) for chat in text_inputs]  # 🐈 🐈 🐈
+                print("Detected batch of chats, each as a list of dictionaries.")
+                print(f"Batch of chats input: {text_inputs}")
+                chats = [Chat(chat) for chat in text_inputs]
                 return super().__call__(chats, **kwargs)
         else:
+            print("Detected input as plain text or list of plain texts.")
+            print(f"text_inputs: {text_inputs}")
             return super().__call__(text_inputs, **kwargs)
+
 
     def preprocess(
         self,
