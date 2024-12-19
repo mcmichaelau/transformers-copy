@@ -2256,8 +2256,8 @@ class GenerationMixin:
 
         elif generation_mode in (GenerationMode.SAMPLE, GenerationMode.GREEDY_SEARCH):
             print("generation_mode in (GenerationMode.SAMPLE, GenerationMode.GREEDY_SEARCH) in generate")
-            generation_config.output_scores = True
-            generation_config.return_dict_in_generate = True
+            # generation_config.output_scores = True
+            # generation_config.return_dict_in_generate = True
             print("generation_config in generate right before expand_inputs_for_generation:")
             for key, value in generation_config.__dict__.items():
                 if isinstance(value, torch.Tensor):
