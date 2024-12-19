@@ -1253,10 +1253,18 @@ class Pipeline(_ScikitCompat, PushToHubMixin):
 
         preprocess_params, forward_params, postprocess_params = self._sanitize_parameters(**kwargs)
 
+        print("preprocess_params", preprocess_params)
+        print("forward_params", forward_params)
+        print("postprocess_params", postprocess_params)
+
         # Fuse __init__ params and __call__ params without modifying the __init__ ones.
         preprocess_params = {**self._preprocess_params, **preprocess_params}
         forward_params = {**self._forward_params, **forward_params}
         postprocess_params = {**self._postprocess_params, **postprocess_params}
+
+        print("preprocess_params after fusion", preprocess_params)
+        print("forward_params after fusion", forward_params)
+        print("postprocess_params after fusion", postprocess_params)
 
         self.call_count += 1
         if self.call_count > 10 and self.framework == "pt" and self.device.type == "cuda":
@@ -1298,6 +1306,7 @@ class Pipeline(_ScikitCompat, PushToHubMixin):
                 )
             )
         else:
+            print("Running single")
             return self.run_single(inputs, preprocess_params, forward_params, postprocess_params)
 
     def run_multi(self, inputs, preprocess_params, forward_params, postprocess_params):
@@ -1307,6 +1316,7 @@ class Pipeline(_ScikitCompat, PushToHubMixin):
         model_inputs = self.preprocess(inputs, **preprocess_params)
         model_outputs = self.forward(model_inputs, **forward_params)
         outputs = self.postprocess(model_outputs, **postprocess_params)
+        print("outputs in run_single", outputs)
         return outputs
 
     def iterate(self, inputs, preprocess_params, forward_params, postprocess_params):
