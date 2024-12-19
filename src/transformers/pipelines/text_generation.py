@@ -348,6 +348,15 @@ class TextGenerationPipeline(Pipeline):
 
         print("Final inputs in preprocess", inputs)
 
+        print(f"type of inputs in preprocess: {type(inputs)}")
+
+        # print all keys of inputs
+        print("All keys of inputs in preprocess", inputs.keys())
+
+        # print each key of inputs
+        for key, value in inputs.items():
+            print(f"Key: {key}, Type: {type(value)}, Shape: {value.shape if hasattr(value, 'shape') else 'N/A'}")
+
         return inputs
 
     def _forward(self, model_inputs, **generate_kwargs):
