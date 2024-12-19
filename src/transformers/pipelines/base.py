@@ -296,6 +296,8 @@ def infer_framework_load_model(
 
             try:
                 print("Trying to load model:", model)
+                print(f'model_class: {model_class}')
+                print(f'kwargs: {kwargs}')
                 model = model_class.from_pretrained(model, **kwargs)
                 if hasattr(model, "eval"):
                     model = model.eval()
