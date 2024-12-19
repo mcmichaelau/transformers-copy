@@ -1120,8 +1120,6 @@ class ProcessorMixin(PushToHubMixin):
                 Additional keyword arguments
         """
 
-        print("------------- Apply Chat Template processing utils -------------")
-        print(f"conversation in apply_chat_template: {conversation}")
         if chat_template is None:
             if self.chat_template is not None:
                 chat_template = self.chat_template

@@ -1623,6 +1623,8 @@ class PreTrainedTokenizerBase(SpecialTokensMixin, PushToHubMixin):
 
         chat_template = self.get_chat_template(chat_template, tools)
 
+        print(f"chat_template: {chat_template}")
+
         if return_assistant_tokens_mask and not re.search(r"\{\%-?\s*generation\s*-?\%\}", chat_template):
             logger.warning_once(
                 "return_assistant_tokens_mask==True but chat template does not contain `{% generation %}` keyword."
@@ -1672,11 +1674,17 @@ class PreTrainedTokenizerBase(SpecialTokensMixin, PushToHubMixin):
         rendered = []
         all_generation_indices = []
         template_kwargs = {**self.special_tokens_map, **kwargs}  # kwargs overwrite special tokens if both are present
+        print("Iterating over conversations in apply_chat_template")
+        i=0
         for chat in conversations:
+            i+=1
+            print(f"chat {i} in apply_chat_template: {chat}")
             if hasattr(chat, "messages"):
                 # Indicates it's a Conversation object
                 chat = chat.messages
+                print(f"chat {i} after messages in apply_chat_template: {chat}")
             if return_assistant_tokens_mask:
+                print("return_assistant_tokens_mask in apply_chat_template")
                 rendered_chat, generation_indices = _render_with_assistant_indices(
                     compiled_template=compiled_template,
                     messages=chat,
@@ -1687,6 +1695,7 @@ class PreTrainedTokenizerBase(SpecialTokensMixin, PushToHubMixin):
                 )
                 all_generation_indices.append(generation_indices)
             else:
+                print("not return_assistant_tokens_mask in apply_chat_template")
                 rendered_chat = compiled_template.render(
                     messages=chat,
                     tools=tool_schemas,
@@ -1695,6 +1704,7 @@ class PreTrainedTokenizerBase(SpecialTokensMixin, PushToHubMixin):
                     **template_kwargs,
                 )
             if continue_final_message:
+                print("continue_final_message in apply_chat_template")
                 final_message = chat[-1]["content"]
                 if isinstance(final_message, (list, tuple)):
                     final_message = final_message[-1]["text"]
@@ -1704,6 +1714,8 @@ class PreTrainedTokenizerBase(SpecialTokensMixin, PushToHubMixin):
                     # Some chat templates like Llama-3.1 trim messages before rendering, so we must do the same here.
                     final_message = final_message.strip()
                     rendered_chat = rendered_chat[: rendered_chat.rindex(final_message) + len(final_message)]
+
+            print(f"rendered_chat {i} in apply_chat_template: {rendered_chat}")
             rendered.append(rendered_chat)
 
         if not is_batched:
