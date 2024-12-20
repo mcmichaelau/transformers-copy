@@ -414,7 +414,7 @@ class TextGenerationPipeline(Pipeline):
         clean_up_tokenization_spaces=True,
         continue_final_message=None,
     ):
-        print("------------- Postprocess -------------")
+        print("------------- Postprocessing -------------")
         generated_sequence = model_outputs["generated_sequence"][0]
         input_ids = model_outputs["input_ids"]
         prompt_text = model_outputs["prompt_text"]
