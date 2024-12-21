@@ -418,8 +418,8 @@ class TextGenerationPipeline(Pipeline):
         
         generated_sequence = model_outputs["generated_sequence"][0]
 
-        raw_text_output = self.tokenizer.decode(generated_sequence, skip_special_tokens=True, clean_up_tokenization_spaces=clean_up_tokenization_spaces)
-        print("\n\nraw_text_output in postprocess", raw_text_output, "\n\n")
+        # raw_text_output = self.tokenizer.decode(generated_sequence, skip_special_tokens=True, clean_up_tokenization_spaces=clean_up_tokenization_spaces)
+        # print("\n\nraw_text_output in postprocess", raw_text_output, "\n\n")
         input_ids = model_outputs["input_ids"]
         prompt_text = model_outputs["prompt_text"]
         print("prompt_text in postprocess", prompt_text.messages)
