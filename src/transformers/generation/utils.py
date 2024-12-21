@@ -2423,6 +2423,8 @@ class GenerationMixin:
 
         print(f'result in generate: {result}')
 
+        
+
         # Convert to legacy cache format if requested
         if (
             generation_config.return_legacy_cache is not False  # Should check for `True` after v4.47

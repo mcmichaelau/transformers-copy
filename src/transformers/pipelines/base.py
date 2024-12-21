@@ -1332,6 +1332,8 @@ class Pipeline(_ScikitCompat, PushToHubMixin):
     def run_single(self, inputs, preprocess_params, forward_params, postprocess_params):
         model_inputs = self.preprocess(inputs, **preprocess_params)
         model_outputs = self.forward(model_inputs, **forward_params)
+        print("model_outputs in run_single", model_outputs)
+        
         outputs = self.postprocess(model_outputs, **postprocess_params)
         print("outputs in run_single", outputs)
         return outputs
