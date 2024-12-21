@@ -427,10 +427,13 @@ class TextGenerationPipeline(Pipeline):
         print("input_ids in postprocess", input_ids)
         generated_sequence = generated_sequence.numpy().tolist()
         records = []
+        print(f'length of generated_sequence in postprocess: {len(generated_sequence)}')
         for sequence in generated_sequence:
             if return_type == ReturnType.TENSORS:
+                print("return_type == ReturnType.TENSORS in postprocess")
                 record = {"generated_token_ids": sequence}
             elif return_type in {ReturnType.NEW_TEXT, ReturnType.FULL_TEXT}:
+                print("return_type in {ReturnType.NEW_TEXT, ReturnType.FULL_TEXT} in postprocess")
                 # Decode text
                 text = self.tokenizer.decode(
                     sequence,
