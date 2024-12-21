@@ -478,4 +478,6 @@ class TextGenerationPipeline(Pipeline):
                 record = {"generated_text": all_text}
             records.append(record)
 
+        print("\n\nrecords in postprocess", records, "\n\n")
+
         return records
