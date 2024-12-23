@@ -3381,7 +3381,7 @@ class GenerationMixin:
                     past_key_values=model_kwargs.get("past_key_values"),
                 )
         else:
-            print("return_dict_in_generate in generate else")
+            print("return_dict_in_generate in generate else 2")
             return input_ids
 
     def _temporary_reorder_cache(self, past_key_values, beam_idx):
