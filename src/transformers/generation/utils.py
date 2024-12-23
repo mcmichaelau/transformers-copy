@@ -2265,7 +2265,7 @@ class GenerationMixin:
                     # set output_scores to True
                     
                 else:
-                    print(f"  {key}: {value}")
+                    print(f"  {key}: {value}\nhello")
 
             # 11. expand input_ids with `num_return_sequences` additional sequences per batch
             input_ids, model_kwargs = self._expand_inputs_for_generation(
@@ -2274,7 +2274,7 @@ class GenerationMixin:
                 is_encoder_decoder=self.config.is_encoder_decoder,
                 **model_kwargs,
             )
-            print("input_ids in generate right after expand_inputs_for_generation: ", input_ids)
+            # print("input_ids in generate right after expand_inputs_for_generation: ", input_ids)
             print("model_kwargs in generate right after expand_inputs_for_generation: ", model_kwargs)
 
             # 12. run sample (it degenerates to greedy search when `generation_config.do_sample=False`)
@@ -2421,7 +2421,7 @@ class GenerationMixin:
                 **model_kwargs,
             )
 
-        print(f'result in generate: {result}')
+        # print(f'result in generate: {result}')
 
 
 
