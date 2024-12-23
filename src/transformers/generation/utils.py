@@ -2090,8 +2090,8 @@ class GenerationMixin:
         if generation_config.token_healing:
             input_ids = self.heal_tokens(input_ids, tokenizer)
 
-        if streamer is not None:
-            streamer.put(input_ids.cpu())
+        # if streamer is not None:
+        #     streamer.put(input_ids.cpu())
 
         # 6. Prepare `max_length` depending on other stopping criteria.
         input_ids_length = input_ids.shape[-1]
@@ -2423,7 +2423,7 @@ class GenerationMixin:
 
         print(f'result in generate: {result}')
 
-        
+
 
         # Convert to legacy cache format if requested
         if (
@@ -2761,8 +2761,8 @@ class GenerationMixin:
 
             # update generated ids, model inputs, and length for next step
             input_ids = torch.cat([input_ids, next_tokens[:, None]], dim=-1)
-            if streamer is not None:
-                streamer.put(next_tokens.cpu())
+            # if streamer is not None:
+            #     streamer.put(next_tokens.cpu())
 
             # stop when each sentence is finished
             unfinished_sequences = unfinished_sequences & ~stopping_criteria(input_ids, scores)
@@ -3139,8 +3139,8 @@ class GenerationMixin:
 
             # update generated ids, model inputs, and length for next step
             input_ids = torch.cat([input_ids, next_tokens[:, None]], dim=-1)
-            if streamer is not None:
-                streamer.put(next_tokens.cpu())
+            # if streamer is not None:
+            #     streamer.put(next_tokens.cpu())
 
             # stop when each sentence is finished
             unfinished_sequences = unfinished_sequences & ~stopping_criteria(input_ids, scores)
@@ -3339,8 +3339,8 @@ class GenerationMixin:
 
             # update generated ids, model inputs, and length for next step
             input_ids = torch.cat([input_ids, next_tokens[:, None]], dim=-1)
-            if streamer is not None:
-                streamer.put(next_tokens.cpu())
+            # if streamer is not None:
+            #     streamer.put(next_tokens.cpu())
 
             unfinished_sequences = unfinished_sequences & ~stopping_criteria(input_ids, scores)
             this_peer_finished = unfinished_sequences.max() == 0
@@ -4380,8 +4380,8 @@ class GenerationMixin:
 
             # 4.1. Get the valid continuation, after the matching tokens
             input_ids = torch.cat((input_ids, valid_tokens), dim=-1)
-            if streamer is not None:
-                streamer.put(valid_tokens.cpu())
+            # if streamer is not None:
+            #     streamer.put(valid_tokens.cpu())
             new_cur_len = input_ids.shape[-1]
 
             # 4.2. Discard past key values relative to unused assistant tokens
