@@ -3357,6 +3357,7 @@ class GenerationMixin:
             streamer.end()
 
         if return_dict_in_generate:
+            print("return_dict_in_generate in generate")
             if self.config.is_encoder_decoder:
                 return GenerateEncoderDecoderOutput(
                     sequences=input_ids,
@@ -3370,6 +3371,7 @@ class GenerationMixin:
                     past_key_values=model_kwargs.get("past_key_values"),
                 )
             else:
+                print("return_dict_in_generate in generate else")
                 return GenerateDecoderOnlyOutput(
                     sequences=input_ids,
                     scores=scores,
@@ -3379,6 +3381,7 @@ class GenerationMixin:
                     past_key_values=model_kwargs.get("past_key_values"),
                 )
         else:
+            print("return_dict_in_generate in generate else")
             return input_ids
 
     def _temporary_reorder_cache(self, past_key_values, beam_idx):
