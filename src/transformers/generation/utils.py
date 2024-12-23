@@ -2453,6 +2453,8 @@ class GenerationMixin:
                 should_convert_cache = True
             if should_convert_cache:
                 result.past_key_values = result.past_key_values.to_legacy_cache()
+
+        print("result in generate right before return")
         return result
 
     def _has_unfinished_sequences(
@@ -2772,7 +2774,6 @@ class GenerationMixin:
             streamer.end()
 
         if return_dict_in_generate:
-            print("return_dict_in_generate in generate")
             return GenerateDecoderOnlyOutput(
                 sequences=input_ids,
                 scores=scores,
