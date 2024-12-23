@@ -1754,10 +1754,10 @@ class GenerationMixin:
         # TODO(joao): support static caches in assisted generation. assisted generation needs to roll back caches,
         # which is only supported in dynamic caches atm
         if assistant_model is not None and generation_config.cache_implementation is not None:
-            logger.warning_once(
-                "An assistant model is provided, using a dynamic cache instead of a cache of type="
-                f"'{generation_config.cache_implementation}'."
-            )
+            # logger.warning_once(
+            #     "An assistant model is provided, using a dynamic cache instead of a cache of type="
+            #     f"'{generation_config.cache_implementation}'."
+            # )
             generation_config.cache_implementation = None
 
         if generation_config.cache_implementation is not None:
@@ -1868,7 +1868,7 @@ class GenerationMixin:
                         "unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results."
                     )
             pad_token_tensor = eos_token_tensor[0]
-            logger.warning(f"Setting `pad_token_id` to `eos_token_id`:{pad_token_tensor} for open-end generation.")
+            # logger.warning(f"Setting `pad_token_id` to `eos_token_id`:{pad_token_tensor} for open-end generation.")
 
         # Sanity checks/warnings
         if self.config.is_encoder_decoder and decoder_start_token_tensor is None:
