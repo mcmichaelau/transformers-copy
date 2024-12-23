@@ -2772,6 +2772,7 @@ class GenerationMixin:
             streamer.end()
 
         if return_dict_in_generate:
+            print("return_dict_in_generate in generate")
             return GenerateDecoderOnlyOutput(
                 sequences=input_ids,
                 scores=scores,
