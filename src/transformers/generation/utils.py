@@ -2265,7 +2265,7 @@ class GenerationMixin:
                     # set output_scores to True
                     
                 else:
-                    print(f"  {key}: {value}\nhello")
+                    print(f"  {key}: {value}\n")
 
             # 11. expand input_ids with `num_return_sequences` additional sequences per batch
             input_ids, model_kwargs = self._expand_inputs_for_generation(
@@ -2455,6 +2455,8 @@ class GenerationMixin:
                 result.past_key_values = result.past_key_values.to_legacy_cache()
 
         print("result in generate right before return")
+        print(result)
+        print(type(result))
         return result
 
     def _has_unfinished_sequences(
@@ -3359,6 +3361,7 @@ class GenerationMixin:
         if return_dict_in_generate:
             print("return_dict_in_generate in generate")
             if self.config.is_encoder_decoder:
+                print("return_dict_in_generate in generate if")
                 return GenerateEncoderDecoderOutput(
                     sequences=input_ids,
                     scores=scores,
