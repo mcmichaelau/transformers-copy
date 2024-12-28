@@ -3238,6 +3238,7 @@ class GenerationMixin:
             `model.config.is_encoder_decoder=True`.
         """
         print("------------- _sample :) -------------")
+        print(f"Type of self in _sample: {type(self)}")
         # init values
         pad_token_id = generation_config._pad_token_tensor
         output_attentions = generation_config.output_attentions
