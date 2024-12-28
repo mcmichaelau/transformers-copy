@@ -3319,6 +3319,7 @@ class GenerationMixin:
                 if output_logits:
                     raw_logits += (next_token_logits,)
                 if output_attentions:
+                    print("output_attentions")
                     decoder_attentions += (
                         (outputs.decoder_attentions,) if self.config.is_encoder_decoder else (outputs.attentions,)
                     )
@@ -3334,10 +3335,12 @@ class GenerationMixin:
 
             # token selection
             if do_sample:
+                print("do_sample")
                 probs = nn.functional.softmax(next_token_scores, dim=-1)
                 # TODO (joao): this OP throws "skipping cudagraphs due to ['incompatible ops']", find solution
                 next_tokens = torch.multinomial(probs, num_samples=1).squeeze(1)
             else:
+                print("not do_sample")
                 next_tokens = torch.argmax(next_token_scores, dim=-1)
 
             # finished sentences should have their next token be a padding token
