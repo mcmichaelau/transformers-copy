@@ -537,7 +537,7 @@ class LlamaModel(LlamaPreTrainedModel):
         )
         use_cache = use_cache if use_cache is not None else self.config.use_cache
         return_dict = return_dict if return_dict is not None else self.config.use_return_dict
-
+        
         # Add debug print for input_ids
         if input_ids is not None:
             print("\nInput IDs shape:", input_ids.shape)
@@ -557,6 +557,8 @@ class LlamaModel(LlamaPreTrainedModel):
             inputs_embeds = self.embed_tokens(input_ids)
 
         print("LlamaModel forward")
+
+        print(f"embeddings shape: {inputs_embeds.shape}")
 
         if use_cache and past_key_values is None:
             past_key_values = DynamicCache()
