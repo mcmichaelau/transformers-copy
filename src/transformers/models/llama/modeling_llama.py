@@ -538,10 +538,12 @@ class LlamaModel(LlamaPreTrainedModel):
         use_cache = use_cache if use_cache is not None else self.config.use_cache
         return_dict = return_dict if return_dict is not None else self.config.use_return_dict
 
-        # convert input ids to text
-        input_ids_text = self.convert_input_ids_to_text(input_ids)
+        # Add debug print for input_ids
+        if input_ids is not None:
+            print("\nInput IDs shape:", input_ids.shape)
 
-        print(f"input_ids_text: {input_ids_text}")
+        # convert input ids to text
+
         if (input_ids is None) ^ (inputs_embeds is not None):
             raise ValueError("You must specify exactly one of input_ids or inputs_embeds")
 
