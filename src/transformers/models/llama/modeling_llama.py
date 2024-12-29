@@ -615,8 +615,8 @@ class LlamaModel(LlamaPreTrainedModel):
                 )
                 print(f"type of layer_outputs: {type(layer_outputs)}")
                 print(f"len of layer_outputs: {len(layer_outputs)}")
-                print(f"type of layer_outputs[0]: {type(layer_outputs[0])}")
-                print(f"type of layer_outputs[1]: {type(layer_outputs[1])}")
+                print(f"type of layer_outputs[0]: {type(layer_outputs[0])}, shape: {layer_outputs[0].shape}")
+                print(f"type of layer_outputs[1]: {type(layer_outputs[1])}, shape: {layer_outputs[1].shape}")
 
 
             hidden_states = layer_outputs[0]
