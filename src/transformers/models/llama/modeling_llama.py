@@ -614,6 +614,10 @@ class LlamaModel(LlamaPreTrainedModel):
                     **flash_attn_kwargs,
                 )
                 print(f"type of layer_outputs: {type(layer_outputs)}")
+                print(f"len of layer_outputs: {len(layer_outputs)}")
+                print(f"type of layer_outputs[0]: {type(layer_outputs[0])}")
+                print(f"type of layer_outputs[1]: {type(layer_outputs[1])}")
+
 
             hidden_states = layer_outputs[0]
 
