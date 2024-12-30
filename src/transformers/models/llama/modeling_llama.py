@@ -651,6 +651,7 @@ class LlamaModel(LlamaPreTrainedModel):
             hidden_states=all_hidden_states,
             attentions=all_self_attns,
         )
+        print("returning output")
         return output if return_dict else output.to_tuple()
 
     def _update_causal_mask(

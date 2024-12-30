@@ -3291,6 +3291,7 @@ class GenerationMixin:
             if is_prefill:
                 print("is_prefill")
                 outputs = self(**model_inputs, return_dict=True)
+                print("outputs returned")
                 is_prefill = False
             else:
                 print("not is_prefill")
@@ -3306,9 +3307,9 @@ class GenerationMixin:
             if synced_gpus and this_peer_finished:
                 continue
 
-            print(f"type of outputs in sample: {type(outputs)}")
-            # print all attributes of outputs
-            print(f"attributes of outputs: {dir(outputs)}")
+            # print(f"type of outputs in sample: {type(outputs)}")
+            # # print all attributes of outputs
+            # print(f"attributes of outputs: {dir(outputs)}")
 
             # Clone is needed to avoid keeping a hanging ref to outputs.logits which may be very large for first iteration
             # (the clone itself is always small)
