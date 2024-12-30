@@ -3320,7 +3320,10 @@ class GenerationMixin:
             next_token_logits = next_token_logits.to(input_ids.device)
 
             # pre-process distribution
+
             next_token_scores = logits_processor(input_ids, next_token_logits)
+            print(f'type of next_token_scores: {type(next_token_scores)}')
+            
 
             # Store scores, attentions and hidden_states when required
             if return_dict_in_generate:
