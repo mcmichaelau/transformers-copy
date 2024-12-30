@@ -3306,6 +3306,8 @@ class GenerationMixin:
             if synced_gpus and this_peer_finished:
                 continue
 
+            print(f"type of outputs in sample: {type(outputs)}")
+
             # Clone is needed to avoid keeping a hanging ref to outputs.logits which may be very large for first iteration
             # (the clone itself is always small)
             next_token_logits = outputs.logits[:, -1, :].clone().float()
