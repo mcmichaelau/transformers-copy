@@ -3289,16 +3289,10 @@ class GenerationMixin:
             model_inputs.update({"output_hidden_states": output_hidden_states} if output_hidden_states else {})
 
             if is_prefill:
-                def traceit(frame, event, arg):
-                    if event == "call":
-                        print(f"Calling: {frame.f_code.co_name} in {frame.f_code.co_filename}")
-                    return traceit
-    
-                import sys
-                sys.settrace(traceit)
+                
                 print("is_prefill")
+                print(f"type of self in _sample: {type(self)}")
                 outputs = self(**model_inputs, return_dict=True)
-                sys.settrace(None)  # Turn off tracing
                 print(f'received output type of output: {type(outputs)}')
                 is_prefill = False
             else:
