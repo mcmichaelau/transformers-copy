@@ -3291,7 +3291,7 @@ class GenerationMixin:
             if is_prefill:
                 print("is_prefill")
                 outputs = self(**model_inputs, return_dict=True)
-                print("outputs returned")
+                print(f'received output type of output: {type(outputs)}')
                 is_prefill = False
             else:
                 print("not is_prefill")
