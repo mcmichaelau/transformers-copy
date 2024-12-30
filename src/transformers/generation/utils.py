@@ -3340,6 +3340,11 @@ class GenerationMixin:
                         cross_attentions += (outputs.cross_attentions,)
 
                 if output_hidden_states:
+                    print("output_hidden_states")
+                    print(f'type of outputs.decoder_hidden_states: {type(outputs.decoder_hidden_states)}')
+                    print(f'shape of outputs.decoder_hidden_states: {outputs.decoder_hidden_states.shape}')
+                    print(f'type of outputs.hidden_states: {type(outputs.hidden_states)}')
+                    print(f'shape of outputs.hidden_states: {outputs.hidden_states.shape}')
                     decoder_hidden_states += (
                         (outputs.decoder_hidden_states,)
                         if self.config.is_encoder_decoder
@@ -3360,6 +3365,7 @@ class GenerationMixin:
 
             # finished sentences should have their next token be a padding token
             if has_eos_stopping_criteria:
+                print("has_eos_stopping_criteria")
                 next_tokens = next_tokens * unfinished_sequences + pad_token_id * (1 - unfinished_sequences)
 
             # update generated ids, model inputs, and length for next step
