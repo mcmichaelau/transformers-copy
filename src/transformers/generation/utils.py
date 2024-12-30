@@ -3355,6 +3355,8 @@ class GenerationMixin:
             else:
                 print("not do_sample")
                 next_tokens = torch.argmax(next_token_scores, dim=-1)
+                print(f'type of next_tokens: {type(next_tokens)}')
+                print(f'shape of next_tokens: {next_tokens.shape}')
 
             # finished sentences should have their next token be a padding token
             if has_eos_stopping_criteria:
