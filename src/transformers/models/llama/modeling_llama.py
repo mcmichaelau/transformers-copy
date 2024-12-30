@@ -593,6 +593,8 @@ class LlamaModel(LlamaPreTrainedModel):
             # print decoder layer attributes
             print(f"decoder_layer attributes: {dir(decoder_layer)}")
 
+            # print hidden size of decoder layer
+            print(f"hidden size of decoder layer: {decoder_layer.hidden_size}")
 
 
 
