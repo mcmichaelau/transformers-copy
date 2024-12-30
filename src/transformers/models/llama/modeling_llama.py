@@ -895,6 +895,7 @@ class LlamaForCausalLM(LlamaPreTrainedModel, GenerationMixin):
         print(f'type of logits: {type(logits)}')
         loss = None
         if labels is not None:
+            print("labels is not None")
             loss = self.loss_function(logits=logits, labels=labels, vocab_size=self.config.vocab_size, **kwargs)
 
         if not return_dict:
