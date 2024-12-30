@@ -586,6 +586,10 @@ class LlamaModel(LlamaPreTrainedModel):
         all_self_attns = () if output_attentions else None
 
         for decoder_layer in self.layers[: self.config.num_hidden_layers]:
+
+            # print layer shape
+            print(f"layer shape: {hidden_states.shape}")
+
             if output_hidden_states:
                 all_hidden_states += (hidden_states,)
 
