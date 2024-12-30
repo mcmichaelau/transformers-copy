@@ -3289,8 +3289,10 @@ class GenerationMixin:
             model_inputs.update({"output_hidden_states": output_hidden_states} if output_hidden_states else {})
 
             if is_prefill:
+                import trace
+                tracer = trace.Trace()
                 print("is_prefill")
-                outputs = self(**model_inputs, return_dict=True)
+                outputs = tracer.runfunc(self, **model_inputs, return_dict=True)
                 print(f'received output type of output: {type(outputs)}')
                 is_prefill = False
             else:
