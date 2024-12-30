@@ -892,6 +892,7 @@ class LlamaForCausalLM(LlamaPreTrainedModel, GenerationMixin):
         # Only compute necessary logits, and do not upcast them to float if we are not computing the loss
         logits = self.lm_head(hidden_states[:, -num_logits_to_keep:, :])
 
+        print(f'type of logits: {type(logits)}')
         loss = None
         if labels is not None:
             loss = self.loss_function(logits=logits, labels=labels, vocab_size=self.config.vocab_size, **kwargs)
