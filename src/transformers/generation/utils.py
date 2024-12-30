@@ -3290,9 +3290,11 @@ class GenerationMixin:
 
             if is_prefill:
                 import trace
-                tracer = trace.Trace()
+                tracer = trace.Trace(trace=0, count=1)  # trace=0 disables line tracing, count=1 enables function counting
                 print("is_prefill")
                 outputs = tracer.runfunc(self, **model_inputs, return_dict=True)
+                print("\nFunction calls:")
+                tracer.results().write_results(show_missing=False, summary=True)  # Only shows function call summary
                 print(f'received output type of output: {type(outputs)}')
                 is_prefill = False
             else:
