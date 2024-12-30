@@ -3289,12 +3289,16 @@ class GenerationMixin:
             model_inputs.update({"output_hidden_states": output_hidden_states} if output_hidden_states else {})
 
             if is_prefill:
-                import trace
-                tracer = trace.Trace(trace=0, count=1)  # trace=0 disables line tracing, count=1 enables function counting
+                def traceit(frame, event, arg):
+                    if event == "call":
+                        print(f"Calling: {frame.f_code.co_name} in {frame.f_code.co_filename}")
+                    return traceit
+    
+                import sys
+                sys.settrace(traceit)
                 print("is_prefill")
-                outputs = tracer.runfunc(self, **model_inputs, return_dict=True)
-                print("\nFunction calls:")
-                tracer.results().write_results(show_missing=False, summary=True)  # Only shows function call summary
+                outputs = self(**model_inputs, return_dict=True)
+                sys.settrace(None)  # Turn off tracing
                 print(f'received output type of output: {type(outputs)}')
                 is_prefill = False
             else:

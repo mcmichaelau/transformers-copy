@@ -652,8 +652,10 @@ class LlamaModel(LlamaPreTrainedModel):
             attentions=all_self_attns,
         )
         if return_dict:
+            print("output is base model output")
             output = output
         else:
+            print("output is tuple")
             output = output.to_tuple()
 
         print(f'returning output type of output: {type(output)}')
