@@ -3307,6 +3307,8 @@ class GenerationMixin:
                 continue
 
             print(f"type of outputs in sample: {type(outputs)}")
+            # print all attributes of outputs
+            print(f"attributes of outputs: {dir(outputs)}")
 
             # Clone is needed to avoid keeping a hanging ref to outputs.logits which may be very large for first iteration
             # (the clone itself is always small)
