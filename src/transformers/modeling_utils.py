@@ -1291,6 +1291,8 @@ class PreTrainedModel(nn.Module, ModuleUtilsMixin, GenerationMixin, PushToHubMix
     # `config.base_model_tp_plan` during `post_init`.
     _tp_plan = None
 
+    print("In PreTrainedModel")
+
     @property
     def dummy_inputs(self) -> Dict[str, torch.Tensor]:
         """
