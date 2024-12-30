@@ -3344,7 +3344,8 @@ class GenerationMixin:
                     # print(f'type of outputs.decoder_hidden_states: {type(outputs.decoder_hidden_states)}')
                     # print(f'shape of outputs.decoder_hidden_states: {outputs.decoder_hidden_states.shape}')
                     print(f'type of outputs.hidden_states: {type(outputs.hidden_states)}')
-                    print(f'shape of outputs.hidden_states: {outputs.hidden_states.shape}')
+                    print(f'length of outputs.hidden_states: {len(outputs.hidden_states)}')
+                    # print(f'shape of outputs.hidden_states: {outputs.hidden_states.shape}')
                     decoder_hidden_states += (
                         (outputs.decoder_hidden_states,)
                         if self.config.is_encoder_decoder
