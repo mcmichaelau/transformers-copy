@@ -889,6 +889,10 @@ class LlamaForCausalLM(LlamaPreTrainedModel, GenerationMixin):
         )
 
         print(f'len of outputs in forward: {len(outputs)}')
+        print(f'type of outputs in forward: {type(outputs)}')
+
+        print(f'type of hidden_states in forward: {type(outputs.hidden_states)}')
+        print(f'shape of hidden_states in forward: {outputs.hidden_states.shape}')
 
         hidden_states = outputs[0]
 
