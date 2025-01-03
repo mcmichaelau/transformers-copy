@@ -2456,8 +2456,8 @@ class GenerationMixin:
                 result.past_key_values = result.past_key_values.to_legacy_cache()
 
         print("result in generate right before return")
-        # print(result)
-        print(type(result))
+        print(f'type of result in generate right before return: {type(result)}')
+        print(f'result keys: {result.keys()}')
         return result
 
     def _has_unfinished_sequences(
