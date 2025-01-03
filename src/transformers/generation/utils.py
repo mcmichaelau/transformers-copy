@@ -3345,8 +3345,9 @@ class GenerationMixin:
 
             print(f'type of all_layer_scores: {type(all_layer_scores)}')
             print(f'shape of all_layer_scores: {all_layer_scores.shape}')
-            # Shape should be: [17, batch_size, vocab_size]
-            # e.g., [17, 1, 128256]
+            
+            all_layer_sequences = [input_ids.clone() for _ in range(len(all_layer_scores))]
+
 
             # Store scores, attentions and hidden_states when required
             if return_dict_in_generate:
@@ -3384,6 +3385,9 @@ class GenerationMixin:
             else:
                 print("not do_sample")
                 next_tokens = torch.argmax(next_token_scores, dim=-1)
+                all_layer_next_tokens = [torch.argmax(layer_scores, dim=-1) for layer_scores in all_layer_scores]
+
+                
                 print(f'type of next_tokens: {type(next_tokens)}')
                 print(f'shape of next_tokens: {next_tokens.shape}')
 
@@ -3391,6 +3395,14 @@ class GenerationMixin:
             if has_eos_stopping_criteria:
                 print("has_eos_stopping_criteria")
                 next_tokens = next_tokens * unfinished_sequences + pad_token_id * (1 - unfinished_sequences)
+                all_layer_next_tokens = [
+                    tokens * unfinished_sequences + pad_token_id * (1 - unfinished_sequences)
+                    for tokens in all_layer_next_tokens
+                ]
+
+            print(f'type of all_layer_next_tokens: {type(all_layer_next_tokens)}')
+            print(f'shape of all_layer_next_tokens: {all_layer_next_tokens.shape}')
+
 
             # update generated ids, model inputs, and length for next step
             input_ids = torch.cat([input_ids, next_tokens[:, None]], dim=-1)
