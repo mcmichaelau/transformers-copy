@@ -2288,6 +2288,8 @@ class GenerationMixin:
                 **model_kwargs,
             )
 
+            print(f'type of result in generate 4: {type(result)}')
+
         elif generation_mode in (GenerationMode.BEAM_SAMPLE, GenerationMode.BEAM_SEARCH):
             # 11. prepare beam search scorer
             beam_scorer = BeamSearchScorer(
@@ -2421,7 +2423,6 @@ class GenerationMixin:
                 **model_kwargs,
             )
 
-        print(f'type of result in generate 3: {type(result)}')
 
 
 
