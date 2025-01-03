@@ -2421,7 +2421,7 @@ class GenerationMixin:
                 **model_kwargs,
             )
 
-        # print(f'result in generate: {result}')
+        print(f'type of result in generate 3: {type(result)}')
 
 
 
