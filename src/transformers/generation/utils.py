@@ -3456,6 +3456,8 @@ class GenerationMixin:
 
                 output.all_layer_sequences = all_layer_sequences
 
+                print(f'keys of output: {output.keys()}')
+
                 return output
         else:
             print("return_dict_in_generate in generate else 2")
