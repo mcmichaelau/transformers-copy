@@ -3366,7 +3366,6 @@ class GenerationMixin:
             else:
                 print("not do_sample")
                 next_tokens = torch.argmax(next_token_scores, dim=-1)
-                all_layer_next_tokens = [torch.argmax(layer_scores, dim=-1) for layer_scores in all_layer_scores]
 
                 
                 print(f'type of next_tokens: {type(next_tokens)}')
@@ -3376,13 +3375,7 @@ class GenerationMixin:
             if has_eos_stopping_criteria:
                 print("has_eos_stopping_criteria")
                 next_tokens = next_tokens * unfinished_sequences + pad_token_id * (1 - unfinished_sequences)
-                all_layer_next_tokens = [
-                    tokens * unfinished_sequences + pad_token_id * (1 - unfinished_sequences)
-                    for tokens in all_layer_next_tokens
-                ]
 
-            print(f'type of all_layer_next_tokens: {type(all_layer_next_tokens)}')
-            print(f'shape of all_layer_next_tokens: {all_layer_next_tokens[0].shape}')
 
 
             # update generated ids, model inputs, and length for next step
