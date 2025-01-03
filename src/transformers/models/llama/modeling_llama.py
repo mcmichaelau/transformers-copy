@@ -921,6 +921,7 @@ class LlamaForCausalLM(LlamaPreTrainedModel, GenerationMixin):
         print(f'shape of all_layer_logits: {all_layer_logits.shape}')
 
         print(f'type of logits: {type(logits)}')
+        print(f'shape of logits: {logits.shape}')
         loss = None
         if labels is not None:
             print("labels is not None")
