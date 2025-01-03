@@ -3392,7 +3392,8 @@ class GenerationMixin:
             del outputs
 
         # Process logits from each layer
-        all_layer_sequences = [input_ids.clone() for _ in range(len(all_layer_scores))]
+        all_layer_sequences = [input_ids.clone() for _ in range(len(all_layer_logits))]
+
 
         all_layer_scores = []
         all_layer_next_tokens = []
