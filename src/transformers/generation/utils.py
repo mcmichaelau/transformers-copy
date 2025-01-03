@@ -3456,7 +3456,7 @@ class GenerationMixin:
 
                 output.all_layer_sequences = all_layer_sequences
 
-                print(f'keys of output: {output.keys()}')
+                print(f'type of all_layer_sequences in output: {type(output.all_layer_sequences)}')
 
                 return output
         else:
