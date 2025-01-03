@@ -3392,6 +3392,8 @@ class GenerationMixin:
             del outputs
 
         # Process logits from each layer
+        all_layer_sequences = [input_ids.clone() for _ in range(len(all_layer_scores))]
+
         all_layer_scores = []
         all_layer_next_tokens = []
         for layer_idx, layer_logits in enumerate(all_layer_logits):
@@ -3405,6 +3407,9 @@ class GenerationMixin:
             next_tokens = torch.argmax(layer_scores, dim=-1)
             all_layer_scores.append(layer_scores)
             all_layer_next_tokens.append(next_tokens)
+
+            # add next tokens to all_layer_sequences
+            all_layer_sequences[layer_idx] = torch.cat([all_layer_sequences[layer_idx], next_tokens[:, None]], dim=-1)
         # Stack into single tensor
         all_layer_scores = torch.stack(all_layer_scores)
         print(f'type of all_layer_scores: {type(all_layer_scores)}')
@@ -3413,8 +3418,6 @@ class GenerationMixin:
         all_layer_next_tokens = torch.stack(all_layer_next_tokens)
         print(f'type of all_layer_next_tokens: {type(all_layer_next_tokens)}')
         print(f'shape of all_layer_next_tokens: {all_layer_next_tokens.shape}')
-        
-        all_layer_sequences = [input_ids.clone() for _ in range(len(all_layer_scores))]
 
         print(f'type of all_layer_sequences: {type(all_layer_sequences)}')
         print(f'shape of all_layer_sequences: {all_layer_sequences[0].shape}')
