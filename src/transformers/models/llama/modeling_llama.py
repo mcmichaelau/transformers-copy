@@ -908,10 +908,17 @@ class LlamaForCausalLM(LlamaPreTrainedModel, GenerationMixin):
         # Only compute necessary logits, and do not upcast them to float if we are not computing the loss
         logits = self.lm_head(hidden_states[:, -num_logits_to_keep:, :])
 
-        all_logits = self.lm_head(all_states[:, :, :])
+        # Process each layer's hidden states
+        all_layer_logits = []
+        for layer_state in all_states:
+            # Project each layer's hidden state to vocabulary space
+            layer_logits = self.lm_head(layer_state)
+            all_layer_logits.append(layer_logits)
 
-        print(f'type of all_logits: {type(all_logits)}')
-        print(f'shape of all_logits: {all_logits.shape}')
+        all_layer_logits = torch.stack(all_layer_logits)
+
+        print(f'type of all_layer_logits: {type(all_layer_logits)}')
+        print(f'shape of all_layer_logits: {all_layer_logits.shape}')
 
         print(f'type of logits: {type(logits)}')
         loss = None
