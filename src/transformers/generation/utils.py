@@ -3401,7 +3401,7 @@ class GenerationMixin:
                 ]
 
             print(f'type of all_layer_next_tokens: {type(all_layer_next_tokens)}')
-            print(f'shape of all_layer_next_tokens: {all_layer_next_tokens.shape}')
+            print(f'shape of all_layer_next_tokens: {all_layer_next_tokens[0].shape}')
 
 
             # update generated ids, model inputs, and length for next step
