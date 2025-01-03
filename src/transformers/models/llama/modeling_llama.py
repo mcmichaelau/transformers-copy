@@ -903,7 +903,7 @@ class LlamaForCausalLM(LlamaPreTrainedModel, GenerationMixin):
         # Only compute necessary logits, and do not upcast them to float if we are not computing the loss
         logits = self.lm_head(hidden_states[:, -num_logits_to_keep:, :])
 
-        other_logits = self.lm_head(hidden_states[:, -num_logits_to_keep:, :])
+        other_logits = self.lm_head(hidden_states[:, -num_logits_to_keep-1:, :])
 
         print(f'type of other_logits: {type(other_logits)}')
         print(f'shape of other_logits: {other_logits.shape}')
