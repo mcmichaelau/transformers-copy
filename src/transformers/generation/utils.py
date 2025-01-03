@@ -3329,6 +3329,25 @@ class GenerationMixin:
             print(f'type of next_token_scores: {type(next_token_scores)}')
             print(f'shape of next_token_scores: {next_token_scores.shape}')
 
+            # Process logits from each layer
+            all_layer_scores = []
+            for layer_idx, layer_logits in enumerate(all_layer_logits):
+                # Get last token logits for this layer
+                layer_last_logits = layer_logits[:, -1, :].clone().float()
+                layer_last_logits = layer_last_logits.to(input_ids.device)
+                
+                # Process through logits processor
+                layer_scores = logits_processor(input_ids, layer_last_logits)
+                all_layer_scores.append(layer_scores)
+
+            # Stack into single tensor
+            all_layer_scores = torch.stack(all_layer_scores)
+
+            print(f'type of all_layer_scores: {type(all_layer_scores)}')
+            print(f'shape of all_layer_scores: {all_layer_scores.shape}')
+            # Shape should be: [17, batch_size, vocab_size]
+            # e.g., [17, 1, 128256]
+
             # Store scores, attentions and hidden_states when required
             if return_dict_in_generate:
                 if output_scores:
