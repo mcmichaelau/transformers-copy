@@ -933,14 +933,15 @@ class LlamaForCausalLM(LlamaPreTrainedModel, GenerationMixin):
         
         print("return dict")
 
-        return CausalLMOutputWithPast(
+        output = CausalLMOutputWithPast(
             loss=loss,
             logits=logits,
             past_key_values=outputs.past_key_values,
             hidden_states=outputs.hidden_states,
             attentions=outputs.attentions,
-            all_layer_logits=all_layer_logits,
         )
+        output.all_layer_logits = all_layer_logits  # Add new attribute
+        return output
 
 
 @add_start_docstrings(
