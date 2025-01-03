@@ -3301,6 +3301,10 @@ class GenerationMixin:
                 outputs = model_forward(**model_inputs, return_dict=True)
                 print("type of outputs", type(outputs))
 
+            all_logits = outputs.all_layer_logits
+            print(f'type of all_logits in utils: {type(all_logits)}')
+            print(f'shape of all_logits in utils: {all_logits.shape}')
+
             # synced_gpus: don't waste resources running the code we don't need; kwargs must be updated before skipping
             model_kwargs = self._update_model_kwargs_for_generation(
                 outputs,

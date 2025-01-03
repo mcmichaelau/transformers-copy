@@ -939,6 +939,7 @@ class LlamaForCausalLM(LlamaPreTrainedModel, GenerationMixin):
             past_key_values=outputs.past_key_values,
             hidden_states=outputs.hidden_states,
             attentions=outputs.attentions,
+            all_layer_logits=all_layer_logits,
         )
 
 
