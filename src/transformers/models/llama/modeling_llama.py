@@ -898,6 +898,8 @@ class LlamaForCausalLM(LlamaPreTrainedModel, GenerationMixin):
 
         print(f'type of hidden_states: {type(hidden_states)}')
         print(f'shape of hidden_states: {hidden_states.shape}')
+
+        print(f'number of logits to keep: {num_logits_to_keep}')
         # Only compute necessary logits, and do not upcast them to float if we are not computing the loss
         logits = self.lm_head(hidden_states[:, -num_logits_to_keep:, :])
 
