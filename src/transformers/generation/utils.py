@@ -3443,7 +3443,8 @@ class GenerationMixin:
                 )
             else:
                 print("return_dict_in_generate in generate else")
-                return GenerateDecoderOnlyOutput(
+
+                output = GenerateDecoderOnlyOutput(
                     sequences=input_ids,
                     scores=scores,
                     logits=raw_logits,
@@ -3451,6 +3452,10 @@ class GenerationMixin:
                     hidden_states=decoder_hidden_states,
                     past_key_values=model_kwargs.get("past_key_values"),
                 )
+
+                output.all_layer_sequences = all_layer_sequences
+
+                return output
         else:
             print("return_dict_in_generate in generate else 2")
             return input_ids
