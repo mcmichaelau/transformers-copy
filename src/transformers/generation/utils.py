@@ -3469,6 +3469,8 @@ class GenerationMixin:
             else:
                 print("return_dict_in_generate in generate else")
 
+                print(f'Shape of input_ids (sequence): {input_ids.shape}')
+
                 output = GenerateDecoderOnlyOutput(
                     sequences=input_ids,
                     scores=scores,
