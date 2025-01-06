@@ -912,7 +912,7 @@ class LlamaForCausalLM(LlamaPreTrainedModel, GenerationMixin):
         all_layer_logits = []
         for layer_state in all_states:
             # Project each layer's hidden state to vocabulary space
-            layer_logits = self.lm_head(layer_state)
+            layer_logits = self.lm_head(layer_state[:, -num_logits_to_keep:, :])
             all_layer_logits.append(layer_logits)
 
         all_layer_logits = torch.stack(all_layer_logits)
