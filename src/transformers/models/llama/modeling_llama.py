@@ -911,7 +911,9 @@ class LlamaForCausalLM(LlamaPreTrainedModel, GenerationMixin):
 
         # Process each layer's hidden states
         if self.all_layer_logits is not None:
-            self.all_layer_logits = self.all_layer_logits
+            layer_logits_list = self.all_layer_logits
+            # convert to tensor
+            layer_logits_list = torch.tensor(layer_logits_list)
         else:
             layer_logits_list = []  # Create temporary list for collection
             
