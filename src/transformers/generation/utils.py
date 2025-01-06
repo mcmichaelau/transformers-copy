@@ -3335,6 +3335,8 @@ class GenerationMixin:
 
             # pre-process distribution
 
+            print(f'shape of input_ids before logits_processor: {input_ids.shape}')
+
             next_token_scores = logits_processor(input_ids, next_token_logits)
             print(f'type of next_token_scores: {type(next_token_scores)}')
             print(f'shape of next_token_scores: {next_token_scores.shape}')
