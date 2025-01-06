@@ -3442,10 +3442,10 @@ class GenerationMixin:
         print(f'type of all_layer_next_tokens: {type(all_layer_next_tokens)}')
         print(f'shape of all_layer_next_tokens: {all_layer_next_tokens.shape}')
 
-        print(f'type of all_layer_sequences: {type(all_layer_sequences)}')
-        print(f'shape of first element of all_layer_sequences: {all_layer_sequences[0].shape}')
+        for sequence in all_layer_sequences:
+            print(f'shape of sequence: {sequence.shape}')
+            print(f'sequence: {sequence}')
 
-        print(f'first element of all_layer_sequences: {all_layer_sequences[0]}')
 
         if streamer is not None:
             streamer.end()
