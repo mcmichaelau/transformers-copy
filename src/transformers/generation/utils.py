@@ -3414,10 +3414,7 @@ class GenerationMixin:
             print(f'type of layer_last_logits: {type(layer_last_logits)}')
             print(f'shape of layer_last_logits: {layer_last_logits.shape}')
 
-            # print the first logit of each layer
-            print(f'first logit of layer {layer_idx}: {layer_last_logits[0, -1, :]}')
-
-            print(f'shape of first logit of layer {layer_idx}: {layer_last_logits[0, -1, :].shape}')
+            print(f'logits of layer {layer_idx}: {layer_last_logits}')
 
 
             layer_last_logits = layer_last_logits.to(input_ids.device)
