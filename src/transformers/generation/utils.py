@@ -3338,6 +3338,9 @@ class GenerationMixin:
 
             print(f'shape of input_ids before logits_processor: {input_ids.shape}')
 
+            print(f'type of next_token_logits: {type(next_token_logits)}')
+            print(f'shape of next_token_logits: {next_token_logits.shape}')
+
             next_token_scores = logits_processor(input_ids, next_token_logits)
             print(f'type of next_token_scores: {type(next_token_scores)}')
             print(f'shape of next_token_scores: {next_token_scores.shape}')
