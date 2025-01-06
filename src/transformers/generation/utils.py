@@ -3411,6 +3411,8 @@ class GenerationMixin:
         all_layer_sequences = []  # Will store sequences generated from each layer's logits
         
         for layer_idx, layer_logits in enumerate(all_layer_logits):
+            print(f'type of layer_logits: {type(layer_logits)}')
+            print(f'shape of layer_logits: {layer_logits.shape}')
             # Get all logits for this layer
             layer_logits = layer_logits.clone().float()  # Shape: (batch_size, seq_len, vocab_size)
             layer_logits = layer_logits.to(input_ids.device)
