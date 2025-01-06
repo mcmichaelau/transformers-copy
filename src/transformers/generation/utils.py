@@ -3310,6 +3310,8 @@ class GenerationMixin:
             for i in range(len(all_layer_logits)):
                 print(f'first logit of layer {i}: {all_layer_logits[i][0, -1, :]}')
 
+                print(f'shape of first logit of layer {i}: {all_layer_logits[i][0, -1, :].shape}')
+
                 # print the last logit of each layer
                 print(f'last logit of layer {i}: {all_layer_logits[i][-1, -1, :]}')
 
