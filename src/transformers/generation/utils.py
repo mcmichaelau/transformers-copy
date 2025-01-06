@@ -3411,19 +3411,28 @@ class GenerationMixin:
         all_layer_sequences = []  # Will store sequences generated from each layer's logits
         
         for layer_idx, layer_logits in enumerate(all_layer_logits):
-            # Get last token logits for this layer
-            layer_last_logits = layer_logits[:, -1, :].clone().float()
-            layer_last_logits = layer_last_logits.to(input_ids.device)
+            # Get all logits for this layer
+            layer_logits = layer_logits.clone().float()  # Shape: (batch_size, seq_len, vocab_size)
+            layer_logits = layer_logits.to(input_ids.device)
             
-            # Process through logits processor
-            layer_scores = logits_processor(input_ids, layer_last_logits)
-            next_tokens = torch.argmax(layer_scores, dim=-1)
-
-            # Create new sequence for this layer starting with just the next token
-            layer_sequence = next_tokens.unsqueeze(-1)  # Shape: (batch_size, 1)
+            # Process through logits processor for each position
+            batch_size, seq_len, vocab_size = layer_logits.shape
+            layer_scores = []
+            layer_tokens = []
+            
+            for pos in range(seq_len):
+                position_logits = layer_logits[:, pos, :]
+                position_scores = logits_processor(input_ids[:, :pos+1], position_logits)
+                next_tokens = torch.argmax(position_scores, dim=-1)
+                
+                layer_scores.append(position_scores)
+                layer_tokens.append(next_tokens)
+            
+            # Stack all position predictions into sequences
+            layer_sequence = torch.stack(layer_tokens, dim=1)  # Shape: (batch_size, seq_len)
             
             all_layer_scores.append(layer_scores)
-            all_layer_next_tokens.append(next_tokens)
+            all_layer_next_tokens.append(layer_tokens)
             all_layer_sequences.append(layer_sequence)
 
         # Stack into single tensor
