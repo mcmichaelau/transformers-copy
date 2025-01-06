@@ -910,19 +910,19 @@ class LlamaForCausalLM(LlamaPreTrainedModel, GenerationMixin):
         logits = self.lm_head(hidden_states[:, -num_logits_to_keep:, :])
 
         # Process each layer's hidden states
-        if all_layer_logits is not None:
-            all_layer_logits = all_layer_logits
+        if self.all_layer_logits is not None:
+            self.all_layer_logits = self.all_layer_logits
         else:
-            all_layer_logits = []
+            self.all_layer_logits = []
         for layer_state in all_states:
             # Project each layer's hidden state to vocabulary space
             layer_logits = self.lm_head(layer_state[:, -num_logits_to_keep:, :])
-            all_layer_logits.append(layer_logits)
+            self.all_layer_logits.append(layer_logits)
 
-        all_layer_logits = torch.stack(all_layer_logits)
+        self.all_layer_logits = torch.stack(self.all_layer_logits)
 
-        print(f'type of all_layer_logits: {type(all_layer_logits)}')
-        print(f'shape of all_layer_logits: {all_layer_logits.shape}')
+        print(f'type of all_layer_logits: {type(self.all_layer_logits)}')
+        print(f'shape of all_layer_logits: {self.all_layer_logits.shape}')
 
         print(f'type of logits: {type(logits)}')
         print(f'shape of logits: {logits.shape}')
@@ -944,7 +944,7 @@ class LlamaForCausalLM(LlamaPreTrainedModel, GenerationMixin):
             hidden_states=outputs.hidden_states,
             attentions=outputs.attentions,
         )
-        output.all_layer_logits = all_layer_logits  # Add new attribute
+        output.all_layer_logits = self.all_layer_logits  # Add new attribute
         return output
 
 
