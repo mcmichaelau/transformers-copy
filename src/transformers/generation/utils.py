@@ -3309,7 +3309,7 @@ class GenerationMixin:
 
             hidden_states = outputs.hidden_states
             print(f'type of hidden_states in utils: {type(hidden_states)}')
-            print(f'shape of hidden_states in utils: {hidden_states.shape}')
+            print(f'shape of first element of hidden_states in utils: {hidden_states[0].shape}')
 
             # print the first logit of each layer
             for i in range(len(all_layer_logits)):
