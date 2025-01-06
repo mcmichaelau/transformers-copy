@@ -913,13 +913,14 @@ class LlamaForCausalLM(LlamaPreTrainedModel, GenerationMixin):
         if self.all_layer_logits is not None:
             self.all_layer_logits = self.all_layer_logits
         else:
-            self.all_layer_logits = []
+            layer_logits_list = []  # Create temporary list for collection
+            
         for layer_state in all_states:
             # Project each layer's hidden state to vocabulary space
             layer_logits = self.lm_head(layer_state[:, -num_logits_to_keep:, :])
-            self.all_layer_logits.append(layer_logits)
+            layer_logits_list.append(layer_logits)  # Append to list instead of tensor
 
-        self.all_layer_logits = torch.stack(self.all_layer_logits)
+        self.all_layer_logits = torch.stack(layer_logits_list)  # Convert list to tensor at the end
 
         print(f'type of all_layer_logits: {type(self.all_layer_logits)}')
         print(f'shape of all_layer_logits: {self.all_layer_logits.shape}')
