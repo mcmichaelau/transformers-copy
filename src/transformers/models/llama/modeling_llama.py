@@ -909,7 +909,10 @@ class LlamaForCausalLM(LlamaPreTrainedModel, GenerationMixin):
         logits = self.lm_head(hidden_states[:, -num_logits_to_keep:, :])
 
         # Process each layer's hidden states
-        all_layer_logits = []
+        if all_layer_logits is not None:
+            all_layer_logits = all_layer_logits
+        else:
+            all_layer_logits = []
         for layer_state in all_states:
             # Project each layer's hidden state to vocabulary space
             layer_logits = self.lm_head(layer_state[:, -num_logits_to_keep:, :])
