@@ -3307,6 +3307,10 @@ class GenerationMixin:
             print(f'type of all_layer_logits in utils: {type(all_layer_logits)}')
             print(f'shape of all_layer_logits in utils: {all_layer_logits.shape}')
 
+            hidden_states = outputs.hidden_states
+            print(f'type of hidden_states in utils: {type(hidden_states)}')
+            print(f'shape of hidden_states in utils: {hidden_states.shape}')
+
             # print the first logit of each layer
             for i in range(len(all_layer_logits)):
                 print(f'first logit of layer {i}: {all_layer_logits[i][0, -1, :]}')
