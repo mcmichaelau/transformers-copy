@@ -3410,6 +3410,10 @@ class GenerationMixin:
         for layer_idx, layer_logits in enumerate(all_layer_logits):
             # Get last token logits for this layer
             layer_last_logits = layer_logits[:, -1, :].clone().float()
+
+            print(f'type of layer_last_logits: {type(layer_last_logits)}')
+            print(f'shape of layer_last_logits: {layer_last_logits.shape}')
+            
             layer_last_logits = layer_last_logits.to(input_ids.device)
             
             # Process through logits processor
