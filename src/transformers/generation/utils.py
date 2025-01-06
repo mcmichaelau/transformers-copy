@@ -3428,26 +3428,16 @@ class GenerationMixin:
                 layer_scores.append(position_scores)
                 layer_tokens.append(next_tokens)
             
-            # Stack all position predictions into sequences
+            # Stack positions for this layer
+            layer_scores = torch.stack(layer_scores, dim=0)  # Shape: (seq_len, batch_size, vocab_size)
             layer_sequence = torch.stack(layer_tokens, dim=1)  # Shape: (batch_size, seq_len)
             
             all_layer_scores.append(layer_scores)
             all_layer_next_tokens.append(layer_tokens)
             all_layer_sequences.append(layer_sequence)
 
-        # Stack into single tensor
-        all_layer_scores = torch.stack(all_layer_scores)
-        print(f'type of all_layer_scores: {type(all_layer_scores)}')
-        print(f'shape of all_layer_scores: {all_layer_scores.shape}')
-
-        all_layer_next_tokens = torch.stack(all_layer_next_tokens)
-        print(f'type of all_layer_next_tokens: {type(all_layer_next_tokens)}')
-        print(f'shape of all_layer_next_tokens: {all_layer_next_tokens.shape}')
-
-        for sequence in all_layer_sequences:
-            print(f'shape of sequence: {sequence.shape}')
-            print(f'sequence: {sequence}')
-
+        # Stack layers
+        all_layer_scores = torch.stack(all_layer_scores, dim=0)  # Shape: (num_layers, seq_len, batch_size, vocab_size)
 
         if streamer is not None:
             streamer.end()
