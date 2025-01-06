@@ -3423,6 +3423,11 @@ class GenerationMixin:
             layer_scores = logits_processor(input_ids, layer_last_logits)
 
             next_tokens = torch.argmax(layer_scores, dim=-1)
+
+            print(f'type of next_tokens: {type(next_tokens)}')
+            print(f'shape of next_tokens: {next_tokens.shape}')
+            print(f'next_tokens: {next_tokens}')
+
             all_layer_scores.append(layer_scores)
             all_layer_next_tokens.append(next_tokens)
 
