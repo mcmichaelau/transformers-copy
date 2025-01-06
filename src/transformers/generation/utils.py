@@ -3454,6 +3454,7 @@ class GenerationMixin:
             print("return_dict_in_generate in generate")
             if self.config.is_encoder_decoder:
                 print("return_dict_in_generate in generate if")
+                print(f'Shape of input_ids (sequence): {input_ids.shape}')
                 return GenerateEncoderDecoderOutput(
                     sequences=input_ids,
                     scores=scores,
