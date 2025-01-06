@@ -3436,6 +3436,9 @@ class GenerationMixin:
             all_layer_next_tokens.append(layer_tokens)
             all_layer_sequences.append(layer_sequence)
 
+        print(f'type of all_layer_sequences: {type(all_layer_sequences)}')
+        print(f'shape of first element of all_layer_sequences: {all_layer_sequences[0].shape}')
+
         # Stack layers
         all_layer_scores = torch.stack(all_layer_scores, dim=0)  # Shape: (num_layers, seq_len, batch_size, vocab_size)
 
