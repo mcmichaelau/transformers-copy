@@ -3306,6 +3306,13 @@ class GenerationMixin:
             print(f'type of all_layer_logits in utils: {type(all_layer_logits)}')
             print(f'shape of all_layer_logits in utils: {all_layer_logits.shape}')
 
+            # print the first logit of each layer
+            for i in range(len(all_layer_logits)):
+                print(f'first logit of layer {i}: {all_layer_logits[i][0, -1, :]}')
+
+                # print the last logit of each layer
+                print(f'last logit of layer {i}: {all_layer_logits[i][-1, -1, :]}')
+
             # synced_gpus: don't waste resources running the code we don't need; kwargs must be updated before skipping
             model_kwargs = self._update_model_kwargs_for_generation(
                 outputs,
