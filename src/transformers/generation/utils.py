@@ -3448,39 +3448,39 @@ class GenerationMixin:
 
 
         
-        for layer_idx, layer_logits in enumerate(all_layer_logits):
-            print(f'type of layer_logits: {type(layer_logits)}')
-            print(f'shape of layer_logits: {layer_logits.shape}')
-            # Get all logits for this layer
-            layer_logits = layer_logits.clone().float()  # Shape: (batch_size, seq_len, vocab_size)
-            layer_logits = layer_logits.to(input_ids.device)
+        # # for layer_idx, layer_logits in enumerate(all_layer_logits):
+        # #     print(f'type of layer_logits: {type(layer_logits)}')
+        # #     print(f'shape of layer_logits: {layer_logits.shape}')
+        # #     # Get all logits for this layer
+        # #     layer_logits = layer_logits.clone().float()  # Shape: (batch_size, seq_len, vocab_size)
+        # #     layer_logits = layer_logits.to(input_ids.device)
             
-            # Process through logits processor for each position
-            batch_size, seq_len, vocab_size = layer_logits.shape
-            layer_scores = []
-            layer_tokens = []
+        # #     # Process through logits processor for each position
+        # #     batch_size, seq_len, vocab_size = layer_logits.shape
+        # #     layer_scores = []
+        # #     layer_tokens = []
             
-            for pos in range(seq_len):
-                position_logits = layer_logits[:, pos, :]
-                position_scores = logits_processor(input_ids[:, :pos+1], position_logits)
-                next_tokens = torch.argmax(position_scores, dim=-1)
+        # #     for pos in range(seq_len):
+        # #         position_logits = layer_logits[:, pos, :]
+        # #         position_scores = logits_processor(input_ids[:, :pos+1], position_logits)
+        # #         next_tokens = torch.argmax(position_scores, dim=-1)
                 
-                layer_scores.append(position_scores)
-                layer_tokens.append(next_tokens)
+        # #         layer_scores.append(position_scores)
+        # #         layer_tokens.append(next_tokens)
             
-            # Stack positions for this layer
-            layer_scores = torch.stack(layer_scores, dim=0)  # Shape: (seq_len, batch_size, vocab_size)
-            layer_sequence = torch.stack(layer_tokens, dim=1)  # Shape: (batch_size, seq_len)
+        # #     # Stack positions for this layer
+        # #     layer_scores = torch.stack(layer_scores, dim=0)  # Shape: (seq_len, batch_size, vocab_size)
+        # #     layer_sequence = torch.stack(layer_tokens, dim=1)  # Shape: (batch_size, seq_len)
             
-            all_layer_scores.append(layer_scores)
-            all_layer_next_tokens.append(layer_tokens)
-            all_layer_sequences.append(layer_sequence)
+        # #     all_layer_scores.append(layer_scores)
+        # #     all_layer_next_tokens.append(layer_tokens)
+        # #     all_layer_sequences.append(layer_sequence)
 
-        print(f'type of all_layer_sequences: {type(all_layer_sequences)}')
-        print(f'shape of first element of all_layer_sequences: {all_layer_sequences[0].shape}')
+        # # print(f'type of all_layer_sequences: {type(all_layer_sequences)}')
+        # # print(f'shape of first element of all_layer_sequences: {all_layer_sequences[0].shape}')
 
-        # Stack layers
-        all_layer_scores = torch.stack(all_layer_scores, dim=0)  # Shape: (num_layers, seq_len, batch_size, vocab_size)
+        # # Stack layers
+        # all_layer_scores = torch.stack(all_layer_scores, dim=0)  # Shape: (num_layers, seq_len, batch_size, vocab_size)
 
         if streamer is not None:
             streamer.end()
@@ -3515,7 +3515,7 @@ class GenerationMixin:
                     past_key_values=model_kwargs.get("past_key_values"),
                 )
 
-                output.all_layer_sequences = all_layer_sequences
+                output.all_layer_sequences = all_layers_next_tokens
 
                 print(f'type of all_layer_sequences in output: {type(output.all_layer_sequences)}')
 
