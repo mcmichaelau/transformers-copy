@@ -3278,6 +3278,8 @@ class GenerationMixin:
                 os.environ["TOKENIZERS_PARALLELISM"] = "0"
                 model_forward = self.get_compiled_call(generation_config.compile_config)
 
+        all_layers_next_tokens = []
+
         is_prefill = True
         while self._has_unfinished_sequences(
             this_peer_finished, synced_gpus, device=input_ids.device, cur_len=cur_len, max_length=max_length
@@ -3306,6 +3308,28 @@ class GenerationMixin:
             all_layer_logits = outputs.all_layer_logits
             print(f'type of all_layer_logits in utils: {type(all_layer_logits)}')
             print(f'shape of all_layer_logits in utils: {all_layer_logits.shape}')
+
+            if all_layers_next_tokens == []:
+                for layer_idx, layer_logits in enumerate(all_layer_logits):
+                    all_layers_next_tokens.append([])
+            for layer_idx, layer_logits in enumerate(all_layer_logits):
+                print(f'type of individual layer_logits in utils: {type(layer_logits)}')
+                print(f'shape of individual layer_logits in utils: {layer_logits.shape}')
+
+                layer_logits = layer_logits.clone().float()  # Shape: (batch_size, seq_len, vocab_size)
+                layer_logits = layer_logits.to(input_ids.device)
+
+                layer_scores = logits_processor(input_ids, layer_logits)
+
+                next_tokens = torch.argmax(layer_scores, dim=-1)
+                all_layers_next_tokens[layer_idx].append(next_tokens)
+
+
+
+                # get the next token scores
+                
+                
+                
 
             hidden_states = outputs.hidden_states
             print(f'type of hidden_states in utils: {type(hidden_states)}')
@@ -3417,6 +3441,12 @@ class GenerationMixin:
         all_layer_scores = []
         all_layer_next_tokens = []
         all_layer_sequences = []  # Will store sequences generated from each layer's logits
+
+        print(f'type of all_layers_next_tokens in utils: {type(all_layers_next_tokens)}')
+        print(f'shape of all_layers_next_tokens in utils: {len(all_layers_next_tokens)}')
+        print(f'shape of first element of all_layers_next_tokens in utils: {len(all_layers_next_tokens[0])}')
+
+
         
         for layer_idx, layer_logits in enumerate(all_layer_logits):
             print(f'type of layer_logits: {type(layer_logits)}')
