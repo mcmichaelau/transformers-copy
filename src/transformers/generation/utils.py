@@ -3324,6 +3324,8 @@ class GenerationMixin:
                 next_tokens = torch.argmax(layer_scores, dim=-1)
                 all_layers_next_tokens[layer_idx].append(next_tokens)
 
+            print(f"All layers next tokens: {all_layers_next_tokens}")
+
 
 
                 # get the next token scores
